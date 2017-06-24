@@ -127,7 +127,7 @@ function ViewModel() {
     center: {lat: 38.7615, lng: -121.2701},
     zoom: 14,
     mapTypeControl: false
-  }
+  };
 
   // Constructor creates new map and inserts it into the div with the id of map
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
