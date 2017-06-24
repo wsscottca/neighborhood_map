@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+	<link rel="stylesheet"
+	 href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="css/styles.css" type="text/css">
+
+	<title>Neighborhood Map</title>
+</head>
+<body>
+	<header class="jumbotron conatiner-fluid topBar">
+		<h1>Neighborhood Map</h1>
+		<span class="glyphicon glyphicon-menu-hamburger"></span>
+	</header>
+	<aside class="nav">
+		<div class="input-group input-group-sm">
+		    <input type="text" class="form-control" placeholder="Search" id="search" data-bind="textInput: search, valueUpdate: 'afterkeydown'">
+  			<span class="input-group-addon">
+  					<span class="glyphicon glyphicon-search"></span>
+  			</span>
+		</div>
+		<div class="popular">
+			<h3>Popular Places</h3>
+			<p>Roseville, CA<p>
+		</div>
+		<div data-bind="foreach: locations">
+			<article class="place">
+				<h5 data-bind="text: name">&nbsp;</h5>
+				<span class="location">
+				 (<span data-bind="text: lat"></span>,
+				  <span data-bind="text: lng"></span>)
+				</span>
+				<br>
+				<!--<a href="#" id="toggle" data-bind="click: setVisibility()">Toggle Marker...</a>-->
+			</article>
+	    </div>
+	</aside>
+	<main class="googleImg">
+		<div id="map">Error loading Google Maps API call.</div>
+	</main>
+
+
+  	<script async type="text/javascript"
+ 	 src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+ 	<script
+  	 src="https://code.jquery.com/jquery-3.2.1.min.js"
+  	 integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  	 crossorigin="anonymous"></script>
+ 	<script async type="text/javascript"
+ 	 src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 	<script async type="text/javascript"
+	 src="js/script.js"></script>
+ 	<script async defer type="text/javascript"
+ 	 src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyC7eUe-n77q_hlz5cLGsujupzpdEI8Rhow&v=3&callback=app"></script>
+</body>
+</html>
