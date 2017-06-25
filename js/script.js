@@ -38,7 +38,7 @@ var initialLocations = [
 ];
 
 function googleMapsError() {
-  $("#map").text("Error with Google Maps API");
+  $("#map").html("<div class='error'>Error with Google Maps API</div>");
 }
 
 // function search filters places/markers by self.search
@@ -101,6 +101,13 @@ function Location(data) {
     }, 5000);
   });
 
+  this.click = ko.observable(function(){
+    self.marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){
+      self.marker.setAnimation(null);
+    }, 5000);
+  });
+
   this.isVisible = ko.computed(function() {
     if(self.visible() === true) {
       self.marker.setMap(map);
@@ -139,7 +146,7 @@ function ViewModel() {
 
   this.filteredList = ko.computed(function(){
     // Make lower case to make finding a match easier
-    search = self.search().toLowerCase();
+    var search = self.search().toLowerCase();
     if (!search){
       // If there is no self.search include all places
       self.locations().forEach(function(location){

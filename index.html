@@ -29,7 +29,7 @@
 			<p>Roseville, CA<p>
 		</div>
 		<div data-bind="foreach: filteredList">
-			<article class="place">
+			<article class="place" data-bind="click: $data.click()">
 				<h5 data-bind="text: name">&nbsp;</h5>
 				<span class="location">
 					(<span data-bind="text: lat"></span>,
@@ -41,7 +41,7 @@
 		</div>
 	</aside>
 	<main class="googleimg">
-		<div id="map">Error loading Google Maps API call.</div>
+		<div id="map"><div class="error">Error loading Google Maps API call.</div></div>
 	</main>
 
 

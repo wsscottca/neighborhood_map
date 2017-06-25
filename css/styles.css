@@ -144,3 +144,8 @@ hr {
 	font-size: 0.75em;
 	float: right;
 }
+
+.error {
+	margin-left: 25%;
+	width: 50%;
+}
