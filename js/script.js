@@ -1,46 +1,52 @@
+"use strict";
+
 // Declare global variables
 var map;
 
 // Initial settings
-var CLIENT_ID = "INSERT_CLIENT_ID_HERE";
-var CLIENT_SECRET = "INSERT_CLIENT_SECRET_HERE";
+var CLIENT_ID = "ZFEBQZIXO4LFAVH4KJQKKKSCU4LR2HNLDAFPLCG0CVQJYZOK";
+var CLIENT_SECRET = "ETFFG51OLQ0IHAE2ILN2LP5R5IC4NWNXKTAM1LIMNQRPJB1W";
 var initialLocations = [
   {
-    name : 'Downtown Roseville',
+    name: "Downtown Roseville",
     lat: 38.7521,
     lng: -121.2880
   },
 
   {
-    name: 'Sunsplash', 
+    name: "Sunsplash",
     lat: 38.7615,
     lng: -121.2574
   },
 
   {
-    name: 'Galleria',
+    name: "Galleria",
     lat: 38.7735,
     lng: -121.2692
   },
 
   {
-    name: 'Dave and Busters',
+    name: "Dave and Buster's",
     lat: 38.7683,
     lng: -121.2701
   },
 
   {
-    name: 'William Bill Hughes Park',
+    name: "William Bill Hughes Park",
     lat: 38.8010,
     lng: -121.3349
   }
 ];
 
+function googleMapsError() {
+  $("#map").text("Error with Google Maps API");
+}
+
 // function search filters places/markers by self.search
 function Location(data) {
   var self = this;
 
-  this.init = true;
+  this.init = ko.observable(true);
   this.error = "";
 
   this.name = data.name;
@@ -53,29 +59,26 @@ function Location(data) {
   this.visible = ko.observable(true);
 
   $.getJSON("https://api.foursquare.com/v2/venues/search?"+
-            "client_id="+CLIENT_ID +
-            "&client_secret="+CLIENT_SECRET +
-            "&v="+(new Date()).toISOString().slice(0,10).replace(/-/g,"") +
-            "&ll="+data.lat+","+data.lng +
-            "&limit=1").done(function(data){
-              var response = data.response.venues[0];
-              console.log(response);
-              self.address = response.location.formattedAddress[0] + ", " +
-                            response.location.formattedAddress[1] + " ";
-              console.log(self.address);
-              if (typeof self.phone != 'undefined') {
-                self.phone = response.contact.formattedPhone;
-              }
-  }).fail(function() {
-    this.name = data.name;
-    this.error = "There was an error with the Foursquare API call. Check internet connection and try again.";
+    "client_id="+ CLIENT_ID +
+    "&client_secret="+ CLIENT_SECRET +
+    "&v="+(new Date()).toISOString().slice(0,10).replace(/-/g,"") +
+    "&ll="+data.lat+","+ data.lng +
+    "&limit=1").done(function(data){
+      var response = data.response.venues[0];
+      self.address = response.location.formattedAddress[0] + ", " +
+      response.location.formattedAddress[1] + " ";
+      self.phone = response.phone || 'No phone number available';
+    }).fail(function() {
+      this.name = data.name;
+      this.error = "There was an error with the Foursquare API call. Check internet connection and try again.";
+      alert(this.error);
   });
 
-    this.contentString = '<div>'+
-                         '<h4>'+self.name+'</h4>'+
-                         '<span>'+self.address+'</span>'+
-                         '<span>'+self.phone+'</span>'+
-                         '</div>';
+  this.contentString = '<div>'+
+    '<h4>'+self.name+'</h4>'+
+    '<span>'+self.address+'</span>'+
+    '<span>'+self.phone+'</span>'+
+    '</div>';
 
   this.infoWindow = new google.maps.InfoWindow({content: self.contentString});
 
@@ -87,12 +90,16 @@ function Location(data) {
 
   this.marker.addListener('click', function(){
     self.contentString = '<div>'+
-                         '<h4>'+self.name+'</h4>'+
-                         '<span>'+self.address+'</span><br>'+
-                         '<span>'+self.phone+'</span>'+
-                         '</div>';
+      '<h4>'+self.name+'</h4>'+
+      '<span>'+self.address+'</span><br>'+
+      '<span>'+self.phone+'</span>'+
+      '</div>';
     self.infoWindow.setContent(self.contentString);
     self.infoWindow.open(map, this);
+    self.marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){
+      self.marker.setAnimation(null);
+    }, 5000);
   });
 
   this.isVisible = ko.computed(function() {
@@ -102,19 +109,14 @@ function Location(data) {
       self.marker.setMap(null);
     }
   }, this);
-
-  // TODO: Fix Toggle marker visibility from list
-  /*this.setVisibility = ko.computed(function() {
-    if(self.init == false){
+  
+  this.setVisibility = ko.observable(function() {
       if(self.visible() === true) {
         self.visible(false);
       } else {
         self.visible(true);
       }
-    } else {
-      self.init == false;
-    }
-  }, this);*/
+  }, this);
 }
 
 function ViewModel() {
@@ -158,7 +160,13 @@ function ViewModel() {
 }
 
 function app(){
-  setTimeout(function(){
-    ko.applyBindings(new ViewModel());
-  }, 200);
+  ko.applyBindings(new ViewModel());
 }
+
+$('.glyphicon-menu-hamburger').click(function(){
+  if ($('.nav').css('visibility') == 'visible') {
+    $('.nav').css('visibility', 'hidden');
+  } else {
+    $('.nav').css('visibility', 'visible');
+  }
+});
