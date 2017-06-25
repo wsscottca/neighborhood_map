@@ -98,14 +98,14 @@ function Location(data) {
     self.marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function(){
       self.marker.setAnimation(null);
-    }, 5000);
+    }, 2100);
   });
 
   this.click = ko.observable(function(){
     self.marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function(){
       self.marker.setAnimation(null);
-    }, 5000);
+    }, 2100);
   });
 
   this.isVisible = ko.computed(function() {
