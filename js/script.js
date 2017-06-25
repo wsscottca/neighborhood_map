@@ -1,6 +1,5 @@
-"use strict";
-
 // Declare global variables
+/* global $, ko, google */
 var map;
 
 // Initial settings
