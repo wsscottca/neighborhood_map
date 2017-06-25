@@ -38,8 +38,16 @@ var initialLocations = [
 ];
 
 function googleMapsError() {
-  $("#map").html("<div class='error'>Error with Google Maps API</div>");
+  $(".error").text("Error with Google Maps API");
 }
+
+var openNav = ko.observable(function openNav(){
+  if ($('.nav').css('visibility') == 'visible') {
+    $('.nav').css('visibility', 'hidden');
+  } else {
+    $('.nav').css('visibility', 'visible');
+  }
+});
 
 // function search filters places/markers by self.search
 function Location(data) {
@@ -110,9 +118,9 @@ function Location(data) {
 
   this.isVisible = ko.computed(function() {
     if(self.visible() === true) {
-      self.marker.setMap(map);
+      self.marker.setVisible(true);
     } else {
-      self.marker.setMap(null);
+      self.marker.setVisible(false);
     }
   }, this);
   
@@ -168,11 +176,3 @@ function ViewModel() {
 function app(){
   ko.applyBindings(new ViewModel());
 }
-
-$('.glyphicon-menu-hamburger').click(function(){
-  if ($('.nav').css('visibility') == 'visible') {
-    $('.nav').css('visibility', 'hidden');
-  } else {
-    $('.nav').css('visibility', 'visible');
-  }
-});
