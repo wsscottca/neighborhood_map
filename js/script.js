@@ -95,6 +95,7 @@ function Location(data) {
     title: data.name
   });
 
+
   this.marker.addListener('click', function(){
     self.contentString = '<div>'+
       '<h4>'+self.name+'</h4>'+
@@ -114,6 +115,13 @@ function Location(data) {
     setTimeout(function(){
       self.marker.setAnimation(null);
     }, 2100);
+    self.contentString = '<div>'+
+      '<h4>'+self.name+'</h4>'+
+      '<span>'+self.address+'</span><br>'+
+      '<span>'+self.phone+'</span>'+
+      '</div>';
+    self.infoWindow.setContent(self.contentString);
+    self.infoWindow.open(map, self.marker);
   });
 
   this.isVisible = ko.computed(function() {
