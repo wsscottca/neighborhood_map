@@ -95,7 +95,6 @@ function Location(data) {
     title: data.name
   });
 
-
   this.marker.addListener('click', function(){
     self.contentString = '<div>'+
       '<h4>'+self.name+'</h4>'+
